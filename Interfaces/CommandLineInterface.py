@@ -1,4 +1,4 @@
-from Interfaces.GameCommandLineInterface import CLI as GameCLI
+from Game.Client import Client
 
 
 class Exit:
@@ -31,7 +31,7 @@ class StartGame:
 
     def execute(self):
         print("Start Game(WIP)")
-        GameCLI().initiate()
+        Client().initiate()
 
     @staticmethod
     def exit_initiated():

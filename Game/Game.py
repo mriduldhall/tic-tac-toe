@@ -21,14 +21,17 @@ class Game:
                 self.board['4'] + '|' + self.board['5'] + '|' + self.board['6'] + \
                 "\n-+-+-\n" + \
                 self.board['1'] + '|' + self.board['2'] + '|' + self.board['3']
-        self.player_one.sendall(f"\n{board}".encode())
-        self.player_two.sendall(f"\n{board}".encode())
+        self.player_one.sendall(f"{board}".encode())
+        self.player_two.sendall(f"{board}".encode())
 
     def end_game(self):
         self.player_one.sendall("END".encode())
         self.player_two.sendall("END".encode())
 
     def play_game(self):
+        game_end = False
         self.announce_game_start()
         self.print_board()
         self.end_game()
+        while not game_end:
+            pass
