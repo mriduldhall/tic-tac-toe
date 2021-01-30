@@ -56,9 +56,6 @@ class Game:
             return False, "Not a valid input!"
 
     def update_board(self, position, character):
-        # print(position)
-        # print(character)
-        # print(self.board[position])
         self.board[position] = character
 
     def take_turn(self, player, character):
@@ -80,10 +77,6 @@ class Game:
     def play_game(self):
         game_end = False
         self.announce_game_start()
-        self.print_board()
-        self.player_one.sendall(f"It's your turnMESSAGEEND".encode())
-        self.player_two.sendall(f"Player one's turnMESSAGEEND".encode())
-        self.take_turn(self.player_one, self.player_one_character)
         self.print_board()
         while not game_end:
             x_occurrences, o_occurrences = self.get_occurrences()
