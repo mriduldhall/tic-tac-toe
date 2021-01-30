@@ -26,15 +26,36 @@ class Client:
         self.socket.close()
         return True
 
+    def input(self, message=None):
+        print("In Input")
+        if not message:
+            message = (self.socket.recv(1024)).decode()
+        position = int(input(message))
+        self.socket.sendall(bytes([position]))
+        return False
+
+    def index_in_list(self, list, index):
+        return index < len(list)
+
     def initiate(self):
         flags = {
             "END": self.end,
+            "INPUT": self.input,
         }
         exit_initiated = False
         while not exit_initiated:
             message = (self.socket.recv(1024)).decode()
-            flag = flags.get(message)
-            if flag is not None:
-                exit_initiated = flag()
-            else:
-                print(message)
+            messages = message.split("MESSAGEEND")
+            del messages[len(messages)-1]
+            message_position = 0
+            for message in messages:
+                flag = flags.get(message)
+                if flag is not None:
+                    if (flag == self.input) and self.index_in_list(messages, message_position+1):
+                        exit_initiated = flag(messages[message_position+1])
+                        del messages[message_position+1]
+                    else:
+                        exit_initiated = flag()
+                else:
+                    print(message)
+                message_position += 1

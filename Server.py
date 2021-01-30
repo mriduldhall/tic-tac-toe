@@ -12,10 +12,10 @@ def launch_game(game):
 def get_players(socket):
     socket.listen()
     player_one, player_one_address = socket.accept()
-    player_one.sendall("Welcome player one\nWaiting for player two...".encode())
+    player_one.sendall("Welcome player one\nWaiting for player two...MESSAGEEND".encode())
     socket.listen()
     player_two, player_two_address = socket.accept()
-    player_two.sendall("Welcome player two".encode())
+    player_two.sendall("Welcome player twoMESSAGEEND".encode())
     return player_one, player_one_address, player_two, player_two_address
 
 
