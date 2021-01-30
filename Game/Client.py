@@ -30,6 +30,8 @@ class Client:
         print("In Input")
         if not message:
             message = (self.socket.recv(1024)).decode()
+        else:
+            message = (message.split("MESSAGEEND"))[0]
         position = int(input(message))
         self.socket.sendall(bytes([position]))
         return False
