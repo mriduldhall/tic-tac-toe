@@ -20,23 +20,19 @@ class Client:
         return name
 
     def end(self):
-        print("Game is over!")
-        # message = (self.socket.recv(1024)).decode()
-        # print(message)
         self.socket.close()
         return True
 
     def input(self, message=None):
-        print("In Input")
         if not message:
             message = (self.socket.recv(1024)).decode()
-        else:
             message = (message.split("MESSAGEEND"))[0]
         position = int(input(message))
         self.socket.sendall(bytes([position]))
         return False
 
-    def index_in_list(self, list, index):
+    @staticmethod
+    def index_in_list(list, index):
         return index < len(list)
 
     def initiate(self):

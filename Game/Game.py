@@ -70,6 +70,35 @@ class Game:
                 player.sendall((message + "MESSAGEEND").encode())
         self.update_board(position, character)
 
+    def check_victory(self):
+        victory = False
+        victor = None
+        loser = None
+        starting_points_groups = [[7, 8, 9], [7, 4, 1], [7], [9]]
+        increments = [-3, 1, -2, -4]
+        for starting_points in starting_points_groups:
+            increment = increments[starting_points_groups.index(starting_points)]
+            for starting_point in starting_points:
+                values = []
+                for _ in range(3):
+                    value = self.board.get(starting_point)
+                    values.append(value)
+                    starting_point += increment
+                if len(set(values)) == 1:
+                    if values[0] == "X":
+                        victor = self.player_one
+                        loser = self.player_two
+                        victory = True
+                    elif values[0] == "O":
+                        victor = self.player_two
+                        loser = self.player_one
+                        victory = True
+        return victory, victor, loser
+
+    def announce_victory(self, victor, loser):
+        victor.sendall(f"The game is over!\nYou have won the game!MESSAGEEND".encode())
+        loser.sendall(f"The game is over!\nBetter luck next timeMESSAGEEND".encode())
+
     def end_game(self):
         self.player_one.sendall(f"ENDMESSAGEEND".encode())
         self.player_two.sendall(f"ENDMESSAGEEND".encode())
@@ -83,4 +112,6 @@ class Game:
             player, character = self.find_turn(x_occurrences, o_occurrences)
             self.take_turn(player, character)
             self.print_board()
+            game_end, victor, loser = self.check_victory()
+        self.announce_victory(victor, loser)
         self.end_game()
