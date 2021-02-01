@@ -11,7 +11,11 @@ class Client:
         HOST = '127.0.0.1'
         PORT = 65432
         client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        client_socket.connect((HOST, PORT))
+        try:
+            client_socket.connect((HOST, PORT))
+        except ConnectionRefusedError:
+            print("Something went wrong!")
+            return None
         return client_socket
 
     def get_details(self):
@@ -27,8 +31,15 @@ class Client:
         if not message:
             message = (self.socket.recv(1024)).decode()
             message = (message.split("MESSAGEEND"))[0]
-        position = int(input(message))
-        self.socket.sendall(bytes([position]))
+        valid_input = False
+        while not valid_input:
+            try:
+                position = int(input(message))
+                self.socket.sendall(bytes([position]))
+            except ValueError:
+                print("Invalid input!")
+            else:
+                valid_input = True
         return False
 
     @staticmethod
@@ -36,6 +47,8 @@ class Client:
         return index < len(list)
 
     def initiate(self):
+        if not self.socket:
+            return
         flags = {
             "END": self.end,
             "INPUT": self.input,

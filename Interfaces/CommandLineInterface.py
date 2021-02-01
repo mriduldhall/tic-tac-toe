@@ -18,7 +18,10 @@ class Help:
         pass
 
     def execute(self):
-        print("Help(WIP)")
+        print("Tic Tac Toe connects two players to a server using sockets.\nPlayer 1 is given X "
+              "whereas player 2 is given O. \nThe positions of the board correspond to a num-pad "
+              "as follows:\n"
+              "7|8|9\n-+-+-\n4|5|6\n-+-+-\n1|2|3")
 
     @staticmethod
     def exit_initiated():
