@@ -30,7 +30,6 @@ class StartGame:
         pass
 
     def execute(self):
-        print("Start Game(WIP)")
         Client().initiate()
 
     @staticmethod

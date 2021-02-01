@@ -95,9 +95,19 @@ class Game:
                         victory = True
         return victory, victor, loser
 
+    def check_tie(self):
+        if " " in self.board.values():
+            return False
+        else:
+            return True
+
     def announce_victory(self, victor, loser):
         victor.sendall(f"The game is over!\nYou have won the game!MESSAGEEND".encode())
         loser.sendall(f"The game is over!\nBetter luck next timeMESSAGEEND".encode())
+
+    def announce_tie(self):
+        self.player_one.sendall(f"The game is over!\nIt's a tie!MESSAGEEND".encode())
+        self.player_two.sendall(f"The game is over!\nIt's a tie!MESSAGEEND".encode())
 
     def end_game(self):
         self.player_one.sendall(f"ENDMESSAGEEND".encode())
@@ -113,5 +123,10 @@ class Game:
             self.take_turn(player, character)
             self.print_board()
             game_end, victor, loser = self.check_victory()
-        self.announce_victory(victor, loser)
+            if game_end:
+                self.announce_victory(victor, loser)
+            else:
+                game_end = self.check_tie()
+                if game_end:
+                    self.announce_tie()
         self.end_game()
